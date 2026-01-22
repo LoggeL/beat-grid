@@ -1,158 +1,161 @@
-# Beat Grid Web App
+# 🎵 Beat Grid
 
-A web application that analyzes audio files to detect beats, BPM, and song structure (chorus, verse, bridge, etc.), displaying them in an interactive beat grid visualization.
+<div align="center">
 
-## Features
+![Beat Grid](https://img.shields.io/badge/Beat-Grid-e94560?style=for-the-badge&logo=music&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.10+-4ecca3?style=for-the-badge&logo=python&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-Backend-0f3460?style=for-the-badge&logo=flask&logoColor=white)
+![JavaScript](https://img.shields.io/badge/Vanilla-JS-f7df1e?style=for-the-badge&logo=javascript&logoColor=black)
 
-- **Audio Upload**: Drag-and-drop or click to upload audio files (MP3, WAV, FLAC, OGG, M4A, AAC)
-- **Beat Detection**: Automatic BPM and beat detection using librosa
-- **Waveform Visualization**: Interactive waveform display with zoom and scroll
-- **Beat Grid**: Visual overlay of detected beats with downbeat highlighting
-- **Song Structure Analysis**: Automatic detection of sections (intro, verse, chorus, bridge, outro)
-- **Click Track**: Synced metronome with adjustable volume
-- **Beat Adjustment**: Manual BPM override, tap tempo, and beat offset adjustment
-- **Export**: Export analysis data as JSON or CSV
+**Eine Web-App zur Audio-Analyse mit Beat-Erkennung, BPM-Detection und Song-Struktur-Visualisierung**
 
-## Project Structure
+*Für Jonas* 🎧
+
+</div>
+
+---
+
+## ✨ Features
+
+| Feature | Beschreibung |
+|---------|--------------|
+| 🎚️ **Audio Upload** | Drag & Drop oder Click – unterstützt MP3, WAV, FLAC, OGG, M4A, AAC |
+| 🥁 **Beat Detection** | Automatische BPM- und Beat-Erkennung mit librosa |
+| 📊 **Waveform** | Interaktive Wellenform-Darstellung mit Zoom & Scroll |
+| 🎯 **Beat Grid** | Visuelle Beat-Marker mit Downbeat-Highlighting |
+| 🏗️ **Song Structure** | Automatische Erkennung von Intro, Verse, Chorus, Bridge, Outro |
+| 🔊 **Click Track** | Synchrones Metronom mit einstellbarer Lautstärke |
+| ⚙️ **Beat Adjustment** | Manuelles BPM, Tap Tempo, Offset-Anpassung |
+| 💾 **Export** | JSON oder CSV Export der Analyse-Daten |
+
+---
+
+## 🚀 Schnellstart
+
+### 1️⃣ Dependencies installieren
+
+```bash
+cd backend
+pip install -r requirements.txt
+```
+
+### 2️⃣ Server starten
+
+```bash
+python app.py
+```
+
+### 3️⃣ Browser öffnen
 
 ```
-beat-grid-app/
-├── backend/
-│   ├── app.py                 # Flask application
-│   ├── requirements.txt       # Python dependencies
-│   ├── audio_processor.py     # Audio analysis functions
-│   ├── beat_detector.py       # BPM & beat detection
-│   └── structure_analyzer.py  # Song structure detection
-├── frontend/
-│   ├── index.html             # Main HTML page
-│   ├── css/
-│   │   └── styles.css         # Dark theme styles
-│   └── js/
-│       ├── app.js             # Main application logic
-│       ├── audio-player.js    # Audio playback & click track
-│       ├── waveform.js        # Waveform visualization
-│       ├── beat-grid.js       # Beat grid rendering
-│       ├── structure.js       # Structure timeline
-│       └── api.js             # Backend API calls
-└── README.md
+http://localhost:5000
 ```
 
-## Installation
+### 4️⃣ Audio-Datei reinziehen und los geht's! 🎉
 
-### Prerequisites
+---
 
-- Python 3.10 or higher
-- pip (Python package manager)
+## ⌨️ Keyboard Shortcuts
 
-### Setup
+| Taste | Aktion |
+|:-----:|--------|
+| `Space` | ▶️ Play / Pause |
+| `←` `→` | ⏪ ⏩ 5 Sekunden vor/zurück |
+| `+` `-` | 🔍 Zoom rein/raus |
+| `C` | 🔊 Click Track an/aus |
+| `T` | 👆 Tap Tempo |
+| `?` | ❓ Hilfe anzeigen |
 
-1. Clone or download this project
+---
 
-2. Install Python dependencies:
-   ```bash
-   cd beat-grid-app/backend
-   pip install -r requirements.txt
-   ```
+## 🎨 Song-Struktur Farben
 
-3. (Optional) For better beat detection, install madmom:
-   ```bash
-   pip install madmom
-   ```
-   Note: madmom provides more accurate beat detection but requires additional setup. The app will fall back to librosa if madmom is not available.
+```
+🟢 Grün    → Intro
+🔵 Blau    → Verse
+🟠 Orange  → Chorus
+🟣 Lila    → Bridge
+⚫ Grau    → Outro
+```
 
-## Running the Application
+---
 
-1. Start the backend server:
-   ```bash
-   cd beat-grid-app/backend
-   python app.py
-   ```
+## 📁 Projekt-Struktur
 
-2. Open your browser and navigate to:
-   ```
-   http://localhost:5000
-   ```
+```
+beat-grid/
+├── 🐍 backend/
+│   ├── app.py                 # Flask Server
+│   ├── audio_processor.py     # Audio-Verarbeitung
+│   ├── beat_detector.py       # BPM & Beat Detection
+│   ├── structure_analyzer.py  # Song-Struktur Analyse
+│   └── requirements.txt       # Python Dependencies
+│
+└── 🌐 frontend/
+    ├── index.html             # Hauptseite
+    ├── css/styles.css         # Dark Theme Styling
+    └── js/
+        ├── app.js             # Main App Logic
+        ├── audio-player.js    # Web Audio API Player
+        ├── waveform.js        # Waveform Canvas
+        ├── beat-grid.js       # Beat Grid Overlay
+        ├── structure.js       # Struktur Timeline
+        └── api.js             # Backend API Calls
+```
 
-3. Upload an audio file by dragging and dropping or clicking the upload zone.
+---
 
-## Usage
+## 🔧 API Endpoints
 
-### Keyboard Shortcuts
+| Endpoint | Method | Beschreibung |
+|----------|:------:|--------------|
+| `/api/upload` | `POST` | Audio-Datei hochladen |
+| `/api/analyze/{id}` | `GET` | Analyse starten/abrufen |
+| `/api/waveform/{id}` | `GET` | Waveform-Daten holen |
+| `/api/update-beats/{id}` | `POST` | Beats manuell anpassen |
+| `/api/click-track/{id}` | `GET` | Click Track Timing |
+| `/api/export/{id}` | `GET` | Daten exportieren |
 
-| Key | Action |
-|-----|--------|
-| `Space` | Play/Pause |
-| `←` / `→` | Seek backward/forward 5 seconds |
-| `+` / `-` | Zoom in/out |
-| `C` | Toggle click track |
-| `T` | Tap tempo |
-| `?` | Show/hide keyboard shortcuts |
+---
 
-### Controls
-
-- **Play/Pause/Stop**: Transport controls for audio playback
-- **Click Track**: Enable metronome synced to detected beats
-- **Zoom**: Adjust waveform zoom level
-- **BPM**: Manual BPM override (detected value shown initially)
-- **Offset**: Shift beat grid phase in milliseconds
-- **x2 / /2**: Double or halve the detected BPM
-- **Tap**: Tap tempo to set custom BPM
-- **Export**: Download analysis as JSON or CSV
-
-### Structure Timeline
-
-Click on any section in the structure timeline to jump to that part of the song. Sections are color-coded:
-- Green: Intro
-- Blue: Verse
-- Orange: Chorus
-- Purple: Bridge
-- Gray: Outro
-
-## API Endpoints
-
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/upload` | POST | Upload audio file |
-| `/api/analyze/{id}` | GET | Get analysis results |
-| `/api/waveform/{id}` | GET | Get waveform data |
-| `/api/update-beats/{id}` | POST | Update beat positions |
-| `/api/click-track/{id}` | GET | Get click track timing |
-| `/api/export/{id}` | GET | Export analysis data |
-| `/api/delete/{id}` | DELETE | Delete uploaded file |
-
-## Technical Details
+## 🧠 Technische Details
 
 ### Beat Detection
+- Nutzt **librosa** für Beat-Tracking
+- Optional: **madmom** für noch genauere RNN-basierte Erkennung
 
-The app uses librosa's beat tracking algorithm by default. If madmom is installed, it uses the more accurate RNN-based beat processor.
+### Struktur-Analyse
+1. Feature Extraction (Chroma, MFCC, Spectral Contrast)
+2. Self-Similarity Matrix
+3. Agglomerative Clustering
+4. Heuristisches Labeling
 
-### Structure Analysis
+### Browser Support
+Chrome ✅ | Firefox ✅ | Safari ✅ | Edge ✅
 
-Song structure is detected using:
-1. Feature extraction (chroma, MFCC, spectral contrast)
-2. Self-similarity matrix computation
-3. Agglomerative clustering for segment boundaries
-4. Heuristic labeling based on position and repetition
+---
 
-### Browser Compatibility
+## 🐛 Troubleshooting
 
-- Chrome (recommended)
-- Firefox
-- Safari
-- Edge
+| Problem | Lösung |
+|---------|--------|
+| Audio spielt nicht | Browser mit Web Audio API Support nutzen |
+| Analyse dauert lang | Große Dateien brauchen mehr Zeit (Downsampling auf 22050 Hz) |
+| BPM stimmt nicht | Tap Tempo nutzen + Offset anpassen |
+| Struktur falsch erkannt | Ist algorithmisch – manuelle Anpassung ggf. nötig |
 
-Requires Web Audio API support for audio playback and click track generation.
+---
 
-## Troubleshooting
+<div align="center">
 
-**Audio won't play**: Make sure your browser supports Web Audio API and the audio format.
-
-**Analysis takes too long**: Large files or high sample rates may take longer. The app downsamples to 22050 Hz for analysis.
-
-**Beat detection is inaccurate**: Try using tap tempo to set the correct BPM, then adjust the offset to align beats.
-
-**Structure detection is wrong**: Structure detection is algorithmic and may not always match human perception. The colored sections are estimates based on musical features.
-
-## License
+## 📜 Lizenz
 
 MIT License
+
+---
+
+Made with ❤️ and 🎵
+
+*Viel Spaß beim Beats analysieren, Jonas!* 🎧🔥
+
+</div>
