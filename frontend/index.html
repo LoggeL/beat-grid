@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beat Grid - Audio Analyzer</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <h1>Beat Grid</h1>
+            <div class="header-info">
+                <span id="bpm-display">-- BPM</span>
+                <span id="time-sig-display">4/4</span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Upload Zone (shown when no file loaded) -->
+            <div id="upload-zone" class="upload-zone">
+                <div class="upload-content">
+                    <svg class="upload-icon" viewBox="0 0 24 24" width="64" height="64">
+                        <path fill="currentColor" d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>
+                    </svg>
+                    <h2>Drop audio file here</h2>
+                    <p>or click to browse</p>
+                    <p class="supported-formats">Supports: MP3, WAV, FLAC, OGG, M4A, AAC</p>
+                    <input type="file" id="file-input" accept=".mp3,.wav,.flac,.ogg,.m4a,.aac" hidden>
+                </div>
+            </div>
+
+            <!-- Analysis View (shown after file loaded) -->
+            <div id="analysis-view" class="analysis-view hidden">
+                <!-- File Info Bar -->
+                <div class="file-info-bar">
+                    <span id="filename-display" class="filename"></span>
+                    <span id="duration-display" class="duration"></span>
+                    <button id="new-file-btn" class="btn btn-small">New File</button>
+                </div>
+
+                <!-- Waveform Container -->
+                <div class="waveform-container">
+                    <canvas id="waveform-canvas"></canvas>
+                    <canvas id="beat-grid-canvas"></canvas>
+                    <div id="playhead" class="playhead"></div>
+
+                    <!-- Time Ruler -->
+                    <div id="time-ruler" class="time-ruler"></div>
+                </div>
+
+                <!-- Structure Timeline -->
+                <div class="structure-container">
+                    <div id="structure-timeline" class="structure-timeline"></div>
+                </div>
+
+                <!-- Transport Controls -->
+                <div class="transport-controls">
+                    <div class="transport-left">
+                        <button id="play-btn" class="btn btn-play">
+                            <svg id="play-icon" viewBox="0 0 24 24" width="24" height="24">
+                                <path fill="currentColor" d="M8 5v14l11-7z"/>
+                            </svg>
+                            <svg id="pause-icon" class="hidden" viewBox="0 0 24 24" width="24" height="24">
+                                <path fill="currentColor" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                            </svg>
+                        </button>
+                        <button id="stop-btn" class="btn">
+                            <svg viewBox="0 0 24 24" width="24" height="24">
+                                <path fill="currentColor" d="M6 6h12v12H6z"/>
+                            </svg>
+                        </button>
+                        <span id="time-display" class="time-display">0:00.000 / 0:00.000</span>
+                    </div>
+
+                    <div class="transport-center">
+                        <div class="control-group">
+                            <label>
+                                <input type="checkbox" id="click-enabled">
+                                Click Track
+                            </label>
+                            <input type="range" id="click-volume" min="0" max="100" value="70" class="volume-slider">
+                        </div>
+                    </div>
+
+                    <div class="transport-right">
+                        <div class="control-group">
+                            <label>Zoom</label>
+                            <input type="range" id="zoom-slider" min="1" max="10" value="1" step="0.1">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Beat Adjustment Controls -->
+                <div class="beat-controls">
+                    <div class="control-section">
+                        <h3>Beat Grid</h3>
+                        <div class="control-row">
+                            <div class="control-group">
+                                <label>BPM</label>
+                                <input type="number" id="bpm-input" min="20" max="300" step="0.1" value="120">
+                                <button id="tap-tempo-btn" class="btn btn-small">Tap</button>
+                            </div>
+                            <div class="control-group">
+                                <label>Offset (ms)</label>
+                                <input type="number" id="offset-input" min="-500" max="500" step="1" value="0">
+                            </div>
+                            <div class="control-group">
+                                <button id="half-bpm-btn" class="btn btn-small">/2</button>
+                                <button id="double-bpm-btn" class="btn btn-small">x2</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="control-section">
+                        <h3>Export</h3>
+                        <div class="control-row">
+                            <button id="export-json-btn" class="btn">Export JSON</button>
+                            <button id="export-csv-btn" class="btn">Export CSV</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading Overlay -->
+            <div id="loading-overlay" class="loading-overlay hidden">
+                <div class="loading-content">
+                    <div class="spinner"></div>
+                    <p id="loading-text">Analyzing audio...</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Keyboard Shortcuts Help -->
+        <div id="shortcuts-help" class="shortcuts-help hidden">
+            <h3>Keyboard Shortcuts</h3>
+            <ul>
+                <li><kbd>Space</kbd> Play/Pause</li>
+                <li><kbd>←</kbd><kbd>→</kbd> Seek</li>
+                <li><kbd>+</kbd><kbd>-</kbd> Zoom</li>
+                <li><kbd>C</kbd> Toggle Click</li>
+                <li><kbd>T</kbd> Tap Tempo</li>
+                <li><kbd>?</kbd> Show/Hide Help</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/api.js"></script>
+    <script src="js/audio-player.js"></script>
+    <script src="js/waveform.js"></script>
+    <script src="js/beat-grid.js"></script>
+    <script src="js/structure.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
